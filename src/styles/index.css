@@ -1,3 +1,43 @@
 /* 
     General Styles
 */
+.contact {
+    display: flex;
+    border: gray solid 1px;
+    margin: auto;
+    padding: 50px;
+    width: 1300px;
+}
+.contact-image {
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    transform: translateY(5%);
+}
+.contact-text {
+    margin-left: 100px;
+    color: rgb(134, 128, 128);
+    width: 700px;
+}
+.contact-name {
+    font-size: x-large;
+    color: black;
+}
+.address {
+    font-size: large;
+}
+svg {
+    margin-left:20px;
+}
+.contact-edit {
+    margin-top: 30px;
+}
+.contact-delete {
+    margin-top: 30px;
+}
+.bi-pencil-square:hover {
+    cursor: pointer;
+}
+.bi-trash3-fill:hover {
+    cursor: pointer;
+}

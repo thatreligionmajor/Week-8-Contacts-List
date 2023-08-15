@@ -1,16 +1,7 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			contacts: [ //to mess with styling, when done st to empty array
-				{
-					"address": "wouldn't you like to know",
-					"agenda_slug": "theresearch",
-					"email": "theresabarkasy@email.com",
-					"full_name": "Theresa Barkasy",
-					"id": 23312579385,
-					"phone": "these are certainly all numbers"
-				}
-			]
+			contacts: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -19,31 +10,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 			fetchAllContacts: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
 				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/theresearch")
 				.then(response => response.json())
-				.then(data => 
+				.then(data => {
+					console.log(data);
 					setStore({contacts:data})
-				)
+				})
 			},
-			changeColor: (index, color) => {
+			fetchDeleteOneContact: id => {
+				let options = {
+					method: "DELETE",
+					body: JSON.stringify(id),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				}
+				fetch("https://playground.4geeks.com/apis/fake/contact/" + id, options)
+					.then(res => {
+					if (!res.ok) throw Error(res.statusText);
+						return res;
+					})
+					.then(res => console.log("Successfully deleted", res))
+			}, 
+			fetchCreateOneContact: newContact => {
+				//create the same way we did the delete function with a options separate
+				//method: "PUT",
+				//json.stringify newcontact
+			},
+			deleteContact: (id) => {
 				//get the store
 				const store = getStore();
+				let revisedContactList = store.contacts.filter(contact => contact.id !== id);
+				getActions().fetchDeleteOneContact(id);
 
-				//we have to loop the entire contacts array to look for the respective index
-				//and change its color
-				const contacts = store.contacts.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ contacts: contacts });
+				setStore({ contacts: revisedContactList });
+			},
+			saveContact: (fullName, address, email, phone) => {
+				let newContact = {
+					full_name: "Jane Doe",
+					address: "12345 A Street, City, State Zip",
+					email: "jdoe@email.com",
+					phone: "(123) 413-4412",
+					agenda_slug: "theresearch"
+				}
+				getActions().addContact(newContact);
+			},
+				addContact: (aNewContact) => {
+					const store = getStore();
+					let revisedStore = [...store.contacts, aNewContact];
+					getActions().fetchCreateOneContact(aNewContact);
+					setStore({contacts: revisedStore})
+				}
 			}
 		}
 	};
-};
 
 export default getState;
