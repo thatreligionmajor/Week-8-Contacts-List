@@ -1,27 +1,45 @@
 /* 
     General Styles
 */
+body {
+    background-color: #D9EDDF;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #83A493;
+}
+
+.navbar-brand {
+    margin: 15px;
+}
+
 .contact {
     display: flex;
-    border: gray solid 1px;
+    border: #AED0BE solid 1px;
+    border-radius: 25px;
     margin: auto;
     padding: 50px;
-    width: 1300px;
+    width: 90%;
 }
 .contact-image {
     border-radius: 50%;
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     transform: translateY(5%);
 }
 .contact-text {
     margin-left: 100px;
-    color: rgb(134, 128, 128);
+    color: #386C5F;
     width: 700px;
+}
+.top-line{
+    display: flex;    
 }
 .contact-name {
     font-size: x-large;
-    color: black;
+    color: #1e493e;
+    width: 90%;
 }
 .address {
     font-size: large;
@@ -29,15 +47,60 @@
 svg {
     margin-left:20px;
 }
+.contact-edit, .contact-delete {
+    z-index: 10;  
+}
 .contact-edit {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 .contact-delete {
-    margin-top: 30px;
+    margin-top: 10px;
 }
+
 .bi-pencil-square:hover {
     cursor: pointer;
 }
 .bi-trash3-fill:hover {
     cursor: pointer;
+}
+
+.css-button-arrow--green {
+    margin: 5px;
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    overflow: hidden;
+    border-radius: 5px;
+    border: none;
+    background-color: #2a5c4f;
+  }
+  .css-button-arrow--green:hover {
+    border-radius: 5px;
+    padding-right: 24px;
+    padding-left:8px;
+  }
+  .css-button-arrow--green:hover:after {
+    opacity: 1;
+    right: 10px;
+  }
+  .css-button-arrow--green:after {
+    content: "\00BB";
+    position: absolute;
+    opacity: 0;
+    font-size: 20px;
+    line-height: 40px;
+    top: 0;
+    right: -20px;
+    transition: 0.4s;
+  }
+
+footer {
+    color: #193629;
 }

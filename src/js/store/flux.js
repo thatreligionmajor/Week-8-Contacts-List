@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+
 			fetchAllContacts: () => {
 				fetch("https://playground.4geeks.com/apis/fake/contact/agenda/theresearch")
 				.then(response => response.json())
@@ -31,36 +32,81 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return res;
 					})
 					.then(res => console.log("Successfully deleted", res))
-			}, 
-			fetchCreateOneContact: newContact => {
-				//create the same way we did the delete function with a options separate
-				//method: "PUT",
-				//json.stringify newcontact
 			},
+
 			deleteContact: (id) => {
 				//get the store
 				const store = getStore();
 				let revisedContactList = store.contacts.filter(contact => contact.id !== id);
 				getActions().fetchDeleteOneContact(id);
 
-				setStore({ contacts: revisedContactList });
+				setStore({ contacts: revisedContactList }); //assuming the back end works, will reset regardless atm 
 			},
 			saveContact: (fullName, address, email, phone) => {
 				let newContact = {
-					full_name: "Jane Doe",
-					address: "12345 A Street, City, State Zip",
-					email: "jdoe@email.com",
-					phone: "(123) 413-4412",
+					full_name: fullName,
+					address: address,
+					email: email,
+					phone: phone,
 					agenda_slug: "theresearch"
 				}
 				getActions().addContact(newContact);
 			},
+			updateContact: (fullName, address, email, phone) => { //this is new, should pair with the editContact.js
+				let updatedContact = {
+					full_name: fullName,
+					address: address,
+					email: email,
+					phone: phone,
+					agenda_slug: "theresearch"
+				}
+				getActions().addContact(updatedContact);
+			}, //getActions().addContact needs to get edited, I believe
+
+			fetchEditOneContact: updatedContact => { //this is new, should pair with the editContact.js
+				let options = {
+					method: "PUT",
+					body: JSON.stringify(updatedContact),
+					headers: {
+						"Content-Type": "application/json" //API Keys, etc.
+					}
+				}
+				fetch("https://playground.4geeks.com/apis/fake/contact/", options)
+					.then(res => {
+						if (!res.ok) throw Error(res.statusText);
+							return res;
+						})
+					.then(res => console.log("Successfully edited", res))
+			},
+
+			fetchCreateOneContact: newContact => {
+				let options = {
+					method: "POST",
+					body: JSON.stringify(newContact),
+					headers: {
+						"Content-Type": "application/json" //API Keys, etc.
+					}
+				}
+				fetch("https://playground.4geeks.com/apis/fake/contact/", options)
+					.then(res => {
+						if (!res.ok) throw Error(res.statusText);
+							return res;
+						})
+					.then(res => console.log("Successfully created", res))
+			},
+
 				addContact: (aNewContact) => {
 					const store = getStore();
 					let revisedStore = [...store.contacts, aNewContact];
 					getActions().fetchCreateOneContact(aNewContact);
 					setStore({contacts: revisedStore})
-				}
+				},
+				// editContact: (updatedContact) => {
+				// 	const store = getStore();
+				// 	let revisedStore = [...store.contacts, updatedContact];
+				// 	getActions().fetchEditOneContact(updatedContact);
+				// 	setStore({contacts: revisedStore})
+				// }
 			}
 		}
 	};
